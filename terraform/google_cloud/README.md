@@ -1,0 +1,186 @@
+# CI/CD Workshop Google Cloud Terraform
+
+This [terraform](https://www.terraform.io/intro/index.html) example creates a new Google Cloud Instance using a [Google's Container-Optimized OS](https://cloud.google.com/container-optimized-os/docs/) image. Container-Optimized OS is an operating system image for Compute Engine VMs that is optimized for running Docker containers. With Container-Optimized OS, you can bring up your Docker containers on Google Cloud Platform quickly, efficiently, and securely.
+
+This tutorial compliments the [Intro CI/CD Tutorial](../../tutorial/cicd_101_guide.md) and demonstrates how use terraform to create a new Google Cloud Instance and deploy the application using the CI/CD Tutorial Docker image.  The image will be pulled from Docker hub and run on the instance created from terraform.
+
+## Create a Google Cloud Account
+
+You will need to [create a new free Google Cloud account](https://cloud.google.com/free)
+
+## Create a Google Cloud Platform Project
+
+ Use these instructions to [create a new Google Cloud project](https://github.com/GoogleCloudPlatform/community/blob/master/tutorials/getting-started-on-gcp-with-terraform/index.md#create-a-google-cloud-platform-project)
+
+## Create and get Google Cloud Project Credentials
+
+You will need to create [Google Cloud Credentials](https://github.com/GoogleCloudPlatform/community/blob/master/tutorials/getting-started-on-gcp-with-terraform/index.md#getting-project-credentials) in order to perform administrative actions using terraform. Go to the [create service account key page](https://console.cloud.google.com/apis/credentials/serviceaccountkey). Select the default service account or create a new one, select JSON as the key type and hit Create. Save this json file in the root of `terraform/google_cloud/`.
+
+**Important Security Note:** Rename the file to `cicd_demo_gcp_creds.json` in order to protect your Google Cloud credentials from being published and exposed in a public GitHub repository. You can also protect the credentials json file from being released by simply adding the credentials json filename in this project's [.gitignore](../../.gitignore) file. You must be very cautious with the data in this json file because if exposed anyone wih this information can hack into your account and create resources and run up charges on your Google Cloud account.
+
+## Install Terraform locally
+
+First [install Terraform locally](https://www.terraform.io/intro/getting-started/install.html)
+
+## Setup Terraform
+
+In a terminal run:
+ 
+ - *cd terraform/google_cloud/*
+ - *terraform init* this installs the Google Terraform Plugins
+
+Now you'll have to change some values in the `main.tf` file. Next you'll change some values in the terraform variable values to match your information.
+
+```HCL
+variable "project_name" {
+  type = "string"
+  default = "cicd-workshops"
+}
+```
+
+Change the *default* value to the project name you created earlier
+
+```HCL
+variable "docker_declaration" {
+  type = "string"
+  # Change the image: string to match the Docker image you want to use
+  default = "spec:\n  containers:\n    - name: test-docker\n      image: 'ariv3ra/cicd-workshop'\n      stdin: false\n      tty: false\n  restartPolicy: Always\n"
+}
+```
+
+Change the value of: `image: 'ariv3ra/cicd-workshop'` to the Docker image that you built and pushed to Docker hub in the CI/CD tutorial. Change the *ariv3ra/cicd-101-workshop* to your Docker image name from Docker Hub.
+
+## Create a DNS Host on [NameCheap.com](https://www.namecheap.com)  (Optional)
+
+**NOTE:** *This step is optional and should only be completed if you want to assign a domain name to your deployment. You can continue to the next step if you're not going to assign a domain name.*
+
+In this step we'll demonstrate how to create a terraform configuration that will create a new DNS Hostname entry for a domain that is maintained by [NameCheap.com](http://namecheap.com). Again if this only applies to NameCheap domains so if you don't have NameCheap hosted domains you cna move on to the next step**Terraform Plan**
+
+Terraform doesn't have an official NameCheap.com provider plugin yet but Terraform is an open source project and anyone can extend it's capabilities and build new providers using [terraform plugin](https://www.terraform.io/docs/plugins/basics.html). Luckily [Adam Shannon](https://github.com/adamdecaf) has built a [NameCheap.com Terraform provider](https://github.com/adamdecaf/terraform-provider-namecheap) which we'll be using to create a new domain name host entry for the deployment.
+
+### Install terraform-provider-namecheap ###
+
+Since the NameCheap.com provider is currently a Third party Terrraform provider we'll have to install it manually. Use these steps to install the provider on your local machine. The following **only** applies to [Linux](https://en.wikipedia.org/wiki/Linux) platforms.
+
+Run these commands in a terminal which creates a plugin folder & downloads the NameCheap provider binary
+
+- $ *mkdir -p ~/.terraform.d/plugins/*
+- $ *wget -O ~/.terraform.d/plugins/terraform-provider-namecheap https://github.com/adamdecaf/terraform-provider-namecheap/releases/download/0.1.0/terraform-provider-namecheap-linux*
+- $ *chmod +x ~/.terraform.d/plugins/terraform-provider-namecheap*
+
+or use this one liner:
+
+`mkdir -p ~/.terraform.d/plugins/ && wget -O ~/.terraform.d/plugins/terraform-provider-namecheap https://github.com/adamdecaf/terraform-provider-namecheap/releases/download/0.1.0/terraform-provider-namecheap-linux && chmod +x ~/.terraform.d/plugins/terraform-provider-namecheap`
+
+### NameCheap.com API Credentials & Tokens ###
+
+In order to programmatically access your NameCheap account you'll have to configure the provider with your account and api credentials. If you don't have the following credentials [follow these instructions on Enable API access & retrieve them from namecheap](https://www.namecheap.com/support/api/intro.aspx)
+
+**NOTE:** Note NameCheap's API is restricted so you must [WhiteList your computer's public IP Address in the NameCheap portal](https://ap.www.namecheap.com/settings/tools/apiaccess/whitelisted-ips) in order for Terraform to access the NameCheap api service.
+
+If you don't whitelist your IP address then you'll experience errors in Terraform similar to the one shown below.
+
+```
+Error: Error refreshing state: 1 error(s) occurred:
+
+* namecheap_record.cicd-workshop: 1 error(s) occurred:
+
+* namecheap_record.cicd-workshop: namecheap_record.cicd-workshop: Couldn't find namecheap record: Could not find the record
+```
+
+Once you have API access and the api token you can proceed.
+
+### Configure terraform-provider-namecheap ###
+
+**IMPORTANT Security Note:** The data & values in this file are very sensitive so you should protect them at ALL times. The `namecheap.tf` is already listed in this repo's `.gitignore` so it will not be added or versioned to this repository.  If you intend to rename this file you **MUST** add that file name to the `.gitignore` file before any commit commands otherwise you run the risk of exposing yur NameCheap security credentials.
+
+Run this command from the root of the project to ensure your namecheap provider file and data are ignored:
+
+```
+echo "namecheap.tf" >> .gitignore
+```
+
+Next create a new file within your terraform directory named `namecheap.tf` by running the following command in a terminal:
+
+```shell
+cat << EOF > namecheap.tf
+# Configure the Namecheap provider
+provider "namecheap" {
+  username = "< namecheap username >"
+  api_user = "< namecheap username >"
+  token = "< namecheap api token >"
+  ip = "< Input an IPv4 IP Address here >"
+  use_sandbox = false
+}
+
+
+resource "namecheap_record" "cicd-workshop" {
+  name = "< Input the host name you want to assign >"
+  domain = "< Input the domain name to assign the new host name ie: foo.com or foo.org >"
+  address = "${google_compute_instance.default.network_interface.0.access_config.0.nat_ip}"
+  mx_pref = 10
+  type = "A"
+  ttl = "120"
+  depends_on = ["google_compute_instance.default"]
+}
+
+output "NameCheap DNS Hostname" {
+  value = "${namecheap_record.cicd-workshop.name}.${namecheap_record.cicd-workshop.domain}"
+}
+EOF
+```
+
+Open the new **namecheap.tf** file in a text editor and replace the *<...>* values with your respective values. Remember to eliminate the *< >* characters when inputting your values. Save your changes and now you're ready to deploy your app with an assigned domain name.
+
+## Terraform plan
+
+The [terraform plan command](https://www.terraform.io/docs/commands/plan.html) is used to create an execution plan. Terraform performs a refresh, unless explicitly disabled, and then determines what actions are necessary to achieve the desired state specified in the configuration files.
+
+This command is a convenient way to check whether the execution plan for a set of changes matches your expectations without making any changes to real resources or to the state.
+
+In a terminal run:
+
+- *terraform plan -out=plan.txt*
+
+This will show you a nice graph that lists what terraform will create or change.
+
+## Terraform apply
+
+The [terraform apply command](https://www.terraform.io/docs/commands/apply.html) is used to apply the changes required to reach the desired state of the configuration, or the pre-determined set of actions generated by a terraform plan execution plan.
+
+In a terminal run:
+
+- *terraform apply plan.txt*
+
+This executes the terraform plan and attempts to build out a new Google Compute Instance based on the terraform and the Docker image defined.
+
+## Google Compute Instance IP Address
+
+When terraform completes building the Google assets you should see the instance's Public IP Address and should look similar to the output below
+
+```
+NameCheap DNS Hostname = test.punkdata.org      NOTE: The NameCheap data will only be displayed if you implemented the terraform-provider-namecheap steps )
+
+Public IP Address = 104.196.11.156
+```
+
+Copy the IP Address or DNS listed and paste into a web browser with port 5000 appended to the end of the IP Address. The complete address should look like this:
+
+```
+https://35.237.090.42:5000
+```
+
+The new application should render a welcome message and an image. The application is a Docker container spawned from the CI/CD Intro tutorial Docker image we build and pushed to CircleCI
+
+## Terraform destroy
+
+Now that we proved your Google Compute instance and Docker container work you really should run the [terraform destroy command](https://www.terraform.io/docs/commands/destroy.html) to destroy the assets that you created in this tutorial. You can also leave it up and running but be aware that there is a cost associated with any assets running in the Google Cloud Platform and you could be liable for those costs.  Google give a generous $300 credit for it's free trial sign-up but you could easily eat through that if your leave assets running. It's your call but run `terraform desroy` to close out any running assets.
+
+## Summary
+
+This tutorial will show you how to deploy a new server to Google Cloud Platform and a Docker container running our CI/CD Intro application using terraform. Use the resource urls to learn more about Google Cloud and Terraform.
+
+## Resource URLs:
+
+- [Terraform Getting Started](https://www.terraform.io/intro/getting-started/install.html)
+- [Google Cloud Compute Instance Getting Started with Terraform](https://cloud.google.com/community/tutorials/getting-started-on-gcp-with-terraform)

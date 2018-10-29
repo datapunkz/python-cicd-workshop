@@ -1,0 +1,46 @@
+version: 2
+jobs:
+  build_test:
+    docker:
+      - image: circleci/python:2.7.14
+    steps:
+      - checkout
+      - run:
+          name: Setup VirtualEnv
+          command: |
+            virtualenv helloworld
+            . helloworld/bin/activate
+            pip install --no-cache-dir -r requirements.txt
+      - run:
+          name: Run Tests
+          command: |
+            . helloworld/bin/activate
+            python test_hello_world.py
+  deploy:
+    docker:
+      - image: circleci/python:2.7.14
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Build and push Docker image
+          command: |       
+            virtualenv helloworld
+            . helloworld/bin/activate
+            pip install --no-cache-dir -r requirements.txt          
+            pyinstaller -F hello_world.py
+            echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
+            echo 'export IMAGE_NAME=python-cicd-workshop' >> $BASH_ENV
+            source $BASH_ENV
+            docker build -t $DOCKER_LOGIN/$IMAGE_NAME -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
+            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push $DOCKER_LOGIN/$IMAGE_NAME
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - build_test
+      - deploy:
+          requires:
+            - build_test
