@@ -11,7 +11,7 @@ variable "port_number" {
 variable "docker_declaration" {
   type = "string"
   # Change the image: string to match the docker image you want to use
-  default = "spec:\n  containers:\n    - name: test-docker\n      image: 'ariv3ra/cicd-workshop'\n      stdin: false\n      tty: false\n  restartPolicy: Always\n"
+  default = "spec:\n  containers:\n    - name: test-docker\n      image: 'ariv3ra/python-cicd-workshop'\n      stdin: false\n      tty: false\n  restartPolicy: Always\n"
 }
 
 variable "boot_image_name" {
