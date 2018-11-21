@@ -16,7 +16,7 @@ Before you get started you'll need to have these things:
 - [GitHub Account](https://github.com/join)
 - [CircleCI](https://circleci.com/signup/) account
 - [Docker Hub account](https://hub.docker.com)
-- Fork then clone the [cicd-101-workshop repo](https://github.com/ariv3ra/cicd-101-workshop) locally
+- Fork then clone the [cicd-101-workshop repo](https://github.com/datapunkz/python-cicd-workshop) locally
 
  After you have all the prerequisites complete you're ready to proceed to the next section.
 
