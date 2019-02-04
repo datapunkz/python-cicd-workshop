@@ -1,2 +1,3 @@
 flask
 pyinstaller
+pip==18.0
