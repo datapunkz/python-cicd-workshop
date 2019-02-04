@@ -16,7 +16,7 @@ jobs:
             python test_hello_world.py
   deploy:
     docker:
-      - image: python:2.7.14
+      - image: circleci/python:2.7.14
     steps:
       - checkout
       - setup_remote_docker:
@@ -25,7 +25,7 @@ jobs:
           name: Build and push Docker image
           command: |       
             pip -V
-            pip install --no-cache-dir -r requirements.txt          
+            pip install --user --no-cache-dir -r requirements.txt          
             pyinstaller -F hello_world.py
             echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
             echo 'export IMAGE_NAME=python-cicd-workshop' >> $BASH_ENV
