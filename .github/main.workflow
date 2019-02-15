@@ -3,7 +3,12 @@ workflow "build_test" {
   resolves = ["build_test01"]
 }
 
-action "build_test01" {
+action "run ls cmd" {
   uses = "docker://circleci/python:2.7.14"
-  runs = "ls -la"
+  runs = "ls -la && whoami && python -V"
 }
+
+# action "run whoami cmd" {
+#   uses = "docker://circleci/python:2.7.14"
+#   runs = "whoami"
+# }
