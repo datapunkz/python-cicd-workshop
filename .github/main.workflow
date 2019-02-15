@@ -1,9 +1,9 @@
 workflow "build_test" {
   on = "push"
-  resolves = ["build_test"]
+  resolves = ["build_test01"]
 }
 
-action "build_test" {
+action "build_test01" {
   uses = "docker://circleci/python:2.7.14"
   runs = "python test_helloworld.py"
 }
