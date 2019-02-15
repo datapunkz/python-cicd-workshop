@@ -5,5 +5,5 @@ workflow "build_test" {
 
 action "build_test01" {
   uses = "docker://circleci/python:2.7.14"
-  runs = "./python test_helloworld.py"
+  runs = "python ./test_helloworld.py"
 }
