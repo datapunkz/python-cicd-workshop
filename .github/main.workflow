@@ -1,9 +1,9 @@
-workflow "Python Install" {
+workflow "build_test" {
   on = "push"
-  resolves = ["Install Python 2.7.15"]
+  resolves = ["build_test"]
 }
 
-action "Install Python 2.7.15" {
-  uses = "custom"
+action "build_test" {
+  uses = "docker://circleci/python:2.7.14"
   runs = "python test_helloworld.py"
 }
