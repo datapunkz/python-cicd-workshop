@@ -5,7 +5,7 @@ workflow "build_test" {
 
 action "build_test01" {
   uses = "docker://circleci/python:2.7.14"
-  runs = "python -V"
+  runs = "./.github/build_test.sh"
 }
 
 # action "run whoami cmd" {
