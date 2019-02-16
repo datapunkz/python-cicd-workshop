@@ -12,6 +12,6 @@ sudo chmod -R 777 /github/
 export TAG=${GITHUB_SHA}
 export IMAGE_NAME='python-cicd-workshop'
 export DOCKER_IMAGE_NAME=${DOCKER_LOGIN}/${IMAGE_NAME}
-# docker build -t ${DOCKER_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:${TAG} .
+docker build -t ${DOCKER_IMAGE_NAME} -t ${DOCKER_IMAGE_NAME}:${TAG} .
 # echo ${DOCKER_PWD} | docker login -u ${DOCKER_LOGIN} --password-stdin
 docker push ${DOCKER_IMAGE_NAME}
