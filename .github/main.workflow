@@ -18,5 +18,5 @@ action "deploy" {
   uses = "docker://circleci/python:2.7.15"
   runs = "./.github/deploy.sh"
   needs = "Docker Login"
-  secrets = ["DOCKER_LOGIN", "DOCKER_PWD"]
+  secrets = ["DOCKER_USERNAME", "DOCKER_PASSWORD"]
 }
