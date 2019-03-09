@@ -11,10 +11,9 @@ class TestHelloWorld(unittest.TestCase):
         response = self.app.get('/')
         self.assertEqual(response.status_code, 200)
     
-    def test_message(self):
-        response = self.app.get('/')
-        message = hello_world.wrap_html('Welcome to CI/CD 101 using CircleCI!')
-        self.assertEqual(response.data, message)
+    def test_greeting_message(self):
+        greeting = 'Welcome to CI/CD 101 using CircleCI!'
+        self.assertEqual(hello_world.greet(), greeting)
 
 if __name__ == '__main__':
     unittest.main()

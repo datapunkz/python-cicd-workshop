@@ -2,7 +2,7 @@ from flask import Flask
 
 app = Flask(__name__)
 
-def wrap_html(message):
+def generate_html(message):
     html = """
         <html>
         <body>
@@ -15,11 +15,14 @@ def wrap_html(message):
         </html>""".format(message)
     return html
 
+def greet():
+    greeting = 'Welcome to CI/CD 101 using CircleCI'
+    return greeting
+
 @app.route('/')
 
 def hello_world():
-    message = 'Welcome to CI/CD 101 using CircleCI!'
-    html = wrap_html(message)
+    html = generate_html(greet())
     return html
 
 if __name__ == '__main__':
