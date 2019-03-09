@@ -18,8 +18,7 @@ jobs:
             pip install --user --no-cache-dir -r requirements.txt
       - run:
           name: Run Tests
-          command: |
-            python test_hello_world.py
+          command: pytest
   deploy:
     docker:
       - image: circleci/python:3.7
