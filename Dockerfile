@@ -1,4 +1,4 @@
-FROM python:2.7.14
+FROM python:3.7
 
 RUN mkdir /opt/hello_world/
 WORKDIR /opt/hello_world/
