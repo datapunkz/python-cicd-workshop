@@ -127,4 +127,5 @@ namecheap.tf
 
 # Test exclusions
 !command/test-fixtures/**/*.tfstate
-!command/test-fixtures/**/.terraform/
+!command/test-fixtures/**/.terraform/results/
+results/
