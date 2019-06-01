@@ -60,12 +60,12 @@ resource "google_compute_instance" "default" {
     }
   }
 
-  metadata {
-    "gce-container-declaration" = "${var.docker_declaration}"
+  metadata = {
+    gce-container-declaration = "${var.docker_declaration}"
   }
 
-  labels {
-    "container-vm"="cos-stable-69-10895-62-0"
+  labels = {
+    container-vm = "cos-stable-69-10895-62-0"
   }
 
   network_interface {
@@ -76,6 +76,6 @@ resource "google_compute_instance" "default" {
   }
 }
 
-output "Public IP Address" {
+output "Public_IP_Address" {
   value = "${google_compute_instance.default.network_interface.0.access_config.0.nat_ip}"
 }
