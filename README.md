@@ -2,9 +2,35 @@
 
 This repo hosts the codebase and tutorial for an Introductory CI/CD Workshop. The workshop is designed to demonstrate and explain how to implement a CI/CD pipeline into a codebase.
 
+This project is based off of Angel Rivera's CI/CD workshop, and made even MORE simple by Kate Catlin. 
+
 ## Tutorial
 
-The tutorial can be found in the `tutorial/` directory of this repo. The [icd_101_guide.md](tutorial/cicd_101_guide.md) file hosts the tutorial content for the hands on portion of this tutorial.
+The original tutorial can be found in the `tutorial/` directory of this repo. The [icd_101_guide.md](tutorial/cicd_101_guide.md) file hosts the tutorial content for the hands on portion of this tutorial. If following, you should see the original project here: https://github.com/datapunkz/python-cicd-workshop
+
+## Tutorial V2
+
+This version of the project is a riff by Kate Catlin, created for THAT Conference in August 2019. 
+
+Here are the steps: 
+-- Fork this project
+-- Add Project to CCI 
+-- Copy/paste the sample config generated on CCI for Python. 
+-- Change the "run tests" bit to a new section because this uses unittest not Django's built in test runner. 
+```
+      - run:
+          name: Run Tests
+          command: ~/.local/bin/pytest
+```
+-- Change the install dependencies to this: 
+```
+      - run:
+          name: Install Python Dependencies
+          command: |
+            pip install --user --no-cache-dir -r requirements.txt
+ ```
+
+
 
 Later config to try: 
 
