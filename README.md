@@ -29,6 +29,19 @@ Here are the steps:
           command: |
             pip install --user --no-cache-dir -r requirements.txt
  ```
+ -- Add in a new orb: 
+ ```
+ orbs:
+  hello-build: circleci/hello-build@0.0.14
+
+Workflows: 
+  Hello: 
+    jobs: 
+      - hello-build/hello-build
+  Build: 
+    jobs: 
+      - build
+ ```
 
 
 
