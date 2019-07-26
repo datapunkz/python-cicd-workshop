@@ -8,7 +8,7 @@ orbs:
   hello-build: circleci/hello-build@0.0.14
 
 Workflows: 
-  Hello Workflow: 
+  Hello: 
     jobs: 
       - hello-build/hello-build
   Build: 
@@ -61,5 +61,3 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
-
-      - encouragement/notify-with-puppies
