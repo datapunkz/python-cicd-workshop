@@ -2,7 +2,11 @@
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
-version: 2
+version: 2.1 
+
+orbs:
+  encouragement: katelabs/encouragement@1.0.2
+
 jobs:
   build:
     docker:
@@ -49,3 +53,5 @@ jobs:
       - store_artifacts:
           path: test-reports
           destination: test-reports
+
+      - encouragement/notify-with-puppies
