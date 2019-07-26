@@ -16,13 +16,13 @@ Before you get started you'll need to have these things:
 - [GitHub Account](https://github.com/join)
 - [CircleCI](https://circleci.com/signup/) account
 - [Docker Hub account](https://hub.docker.com)
-- Fork then clone the [cicd-101-workshop repo](https://github.com/ariv3ra/cicd-101-workshop) locally
+- Fork then clone the [cicd-101-workshop repo](https://github.com/datapunkz/python-cicd-workshop) locally
 
  After you have all the prerequisites complete you're ready to proceed to the next section.
 
 ## The App
 
-This repo contains a simple python [Flask](http://flask.pocoo.org/) and you can find the complete [source code for this project here](https://github.com/ariv3ra/cicd-101-workshop) and you can `git clone` it locally. The app is a simple web server that renders html when a request is made to it. The flask application lives in the `hello_world.py` file:
+This repo contains a simple python [Flask](http://flask.pocoo.org/) and you can find the complete [source code for this project here](https://github.com/datapunkz/python-cicd-workshop) and you can `git clone` it locally. The app is a simple web server that renders html when a request is made to it. The flask application lives in the `hello_world.py` file:
 
 ```python
 from flask import Flask
@@ -263,7 +263,7 @@ CMD [ "./hello_world" ]
 
 ## Hands On with CircleCI
 
-The application, unit tests and config.yml have been explained in detail and provide an initial understanding of how code bases, CI/CD concepts and using CircleCI to facilitate pipelines. The rest of this document will demonstrate how to integrate CircleCI into a user's CircleCI profile and executing CI/CD builds. The [cicd-101-workshop repo](https://github.com/ariv3ra/cicd-101-workshop) will be used in this example.
+The application, unit tests and config.yml have been explained in detail and provide an initial understanding of how code bases, CI/CD concepts and using CircleCI to facilitate pipelines. The rest of this document will demonstrate how to integrate CircleCI into a user's CircleCI profile and executing CI/CD builds. The [cicd-101-workshop repo](https://github.com/datapunkz/python-cicd-workshop) will be used in this example.
 
 ### Add Project to CircleCI
 
