@@ -4,15 +4,18 @@ orbs:
 workflows:
   build_test_deploy:
     jobs:
-      - sec-check/scan:
-          directory: ~/project/
+      - vuln_scan:
       - build_test:
           requires:
-            'sec-check/scan'
+            - vuln_scan
       - deploy:
           requires:
             - build_test
 jobs:
+  vuln_scan:
+    steps:
+      - sec-check/scan:
+          directory: ~/project/
   build_test:
     docker:
       - image: circleci/python:3.7
