@@ -13,6 +13,7 @@ workflows:
             - build_test
 jobs:
   vuln_scan:
+    executor: sec-check/java 
     steps:
       - sec-check/scan:
           directory: ~/project/
