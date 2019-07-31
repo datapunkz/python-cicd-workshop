@@ -7,6 +7,8 @@ workflows:
       - sec-check/scan:
           directory: ~/project/
       - build_test
+          requires:
+            sec-check/scan
       - deploy:
           requires:
             - build_test
