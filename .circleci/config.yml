@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  vulnerability-checker: whitesource/vulnerability-checker@19.5.5
+  vuln-check: whitesource/vulnerability-checker@19.5.5
 workflows:
   build_test_deploy:
     jobs:
@@ -18,7 +18,7 @@ jobs:
           name: Install Python Dependencies
           command: |
             pip install --user --no-cache-dir -r requirements.txt
-      - vulnerability-checker/scan:
+      - vuln-check/scan:
           directory: ~/project/
       - run:
           name: Run Tests
