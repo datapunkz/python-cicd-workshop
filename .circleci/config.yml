@@ -4,11 +4,18 @@ orbs:
 workflows:
   build_test_deploy:
     jobs:
+      - scan_app
       - build_test
       - deploy:
           requires:
             - build_test
 jobs:
+  scan_app:
+    executor: sec-check/java
+    steps:
+      - checkout
+      - sec-check/scan:
+          directory: ~/project/
   build_test:
     docker:
       - image: circleci/python:3.7
@@ -18,8 +25,6 @@ jobs:
           name: Install Python Dependencies
           command: |
             pip install --user --no-cache-dir -r requirements.txt
-      - sec-check/scan:
-          directory: ~/project/
       - run:
           name: Run Tests
           command: ~/.local/bin/pytest
