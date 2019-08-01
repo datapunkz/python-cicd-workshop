@@ -1,14 +1,8 @@
 version: 2.1
-orbs:
-  sec-check: whitesource/vulnerability-checker@19.5.5
 workflows:
   build_test_deploy:
     jobs:
-      - sec-check/scan:
-          directory: ~/project/
-      - build_test:
-          requires:
-            - sec-check/scan
+      - build_test
       - deploy:
           requires:
             - build_test
