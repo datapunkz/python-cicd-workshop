@@ -1,5 +1,5 @@
 version: 2.1
-orb:
+orbs:
   vuln-check: whitesource/vulnerability-checker@19.5.5
 workflows:
   build_test_deploy:
