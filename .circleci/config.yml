@@ -1,8 +1,14 @@
 version: 2.1
+orbs:
+  vuln-check: whitesource/vulnerability-checker@19.5.5
 workflows:
   build_test_deploy:
     jobs:
-      - build_test
+      - vuln-check/scan:
+          directory: ~/project/
+      - build_test:
+          requires:
+            - vuln-check/scan
       - deploy:
           requires:
             - build_test
