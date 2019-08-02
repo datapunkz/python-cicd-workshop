@@ -2,22 +2,9 @@
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
-version: 2.1 
-
-orbs:
-  hello-build: circleci/hello-build@0.0.14
-
-Workflows: 
-  Hello: 
-    jobs: 
-      - hello-build
-  Build: 
-    jobs: 
-      - build
+version: 2.0
 
 jobs:
-  hello-build: 
-    - hello-build/hello-build
   build:
     docker:
       # specify the version you desire here
