@@ -10,12 +10,14 @@ orbs:
 Workflows: 
   Hello: 
     jobs: 
-      - hello-build/hello-build
+      - hello-build
   Build: 
     jobs: 
       - build
 
 jobs:
+  hello-build: 
+    - hello-build/hello-build
   build:
     docker:
       # specify the version you desire here
