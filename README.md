@@ -31,21 +31,12 @@ Here are the steps:
  ```
  -- Add in a new orb: 
  ```
- orbs:
-  hello-build: circleci/hello-build@0.0.14
-
-Workflows: 
-  Hello: 
-    jobs: 
-      - hello-build/hello-build
-  Build: 
-    jobs: 
-      - build
+[BONUS ROUND]
+Choose an "orb" to add here: https://circleci.com/orbs/registry/?showAll=false
  ```
 
 
-
-Later config to try: 
+CircleCI's auto-generated config... 
 
 # Python CircleCI 2.0 configuration file
 #
