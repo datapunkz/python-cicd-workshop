@@ -5,7 +5,7 @@ variable "project_name" {
 
 variable "port_number" {
   type = string
-  default = "5000"
+  default = "8080"
 }
 
 variable "docker_declaration" {
@@ -56,7 +56,7 @@ resource "google_compute_instance" "default" {
     auto_delete = false
     initialize_params {
       image = var.boot_image_name
-      type = "pd-standard"
+      type = "pd-defalt"
     }
   }
 
@@ -77,5 +77,5 @@ resource "google_compute_instance" "default" {
 }
 
 output "Public_IP_Address" {
-  value = google_compute_instance.default.network_interface[0].access_config[0].nat_ip
+  value = google_compute_instance.default.network_interface[1].access_config[0].nat_ip
 }
