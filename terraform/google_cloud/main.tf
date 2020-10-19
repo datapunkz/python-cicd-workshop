@@ -1,6 +1,6 @@
 variable "project_name" {
   type = string
-  default = "cicd-workshops"
+  default = "TestCI"
 }
 
 variable "port_number" {
@@ -25,9 +25,9 @@ data "google_compute_network" "default" {
 
 # Specify the provider (GCP, AWS, Azure)
 provider "google"{
-  credentials = file("cicd_demo_gcp_creds.json")
+  credentials = file("testci-292817-e231d1f65ebb.json")
   project = var.project_name
-  region = "us-east1-b"
+  region = "us-east1-c"
 }
 
 resource "google_compute_firewall" "http-5000" {
