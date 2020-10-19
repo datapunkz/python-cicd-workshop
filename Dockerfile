@@ -6,6 +6,7 @@ WORKDIR /opt/hello_world/
 COPY requirements.txt .
 COPY dist/hello_world /opt/hello_world/
 cd /opt/apps 
+cd /opt/new/test/testdoc
 ls
 mkdir test
 
