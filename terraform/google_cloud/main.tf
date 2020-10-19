@@ -32,14 +32,14 @@ provider "google"{
 
 resource "google_compute_firewall" "http-5000" {
   name    = "http-5000"
-  network = data.google_compute_network.default.name
+  network = data.google_compute_network.default.my_new_project
 
   allow {
     protocol = "icmp"
   }
 
   allow {
-    protocol = "tcp"
+    protocol = "udp"
     ports    = [var.port_number]
   }
 }
@@ -53,7 +53,7 @@ resource "google_compute_instance" "default" {
   ]
 
   boot_disk {
-    auto_delete = true
+    auto_delete = false
     initialize_params {
       image = var.boot_image_name
       type = "pd-standard"
