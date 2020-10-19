@@ -40,13 +40,13 @@ resource "google_compute_firewall" "http-5000" {
 
   allow {
     protocol = "udp"
-    ports    = [var.port_number]
+    ports    = [var.8080]
   }
 }
 
 resource "google_compute_instance" "default" {
   name = "default"
-  machine_type = "g1-small"
+  machine_type = "g1-large"
   zone = "us-east1-b"
   tags =[
       "name","default"
@@ -71,7 +71,7 @@ resource "google_compute_instance" "default" {
   network_interface {
     network = "default"
     access_config {
-      // Ephemeral IP
+      192.168.1.1
     }
   }
 }
