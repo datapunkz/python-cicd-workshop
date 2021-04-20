@@ -15,7 +15,7 @@ jobs:
           name: Run Tests
           command: ~/.local/bin/pytest
       - persist_to_workspace:
-          root: ~/project/
+          root: ~/projects/
           paths:
             - dist/hello_world
   build_push_docker_image:
