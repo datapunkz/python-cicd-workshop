@@ -1,13 +1,6 @@
 version: 2.1
 orbs:
   docker: circleci/docker@1.5.0
-workflows:
-  build_test_deploy:
-    jobs:
-      - build_test
-      - deploy:
-          requires:
-            - build_test
 jobs:
   build_test:
     docker:
@@ -34,3 +27,10 @@ jobs:
       - docker/push:
           image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
           tag: 0.1.<< pipeline.number >>
+workflows:
+  test_build_deploy:
+    jobs:
+      - build_test
+      - build_push_docker_image:
+          requires:
+            - build_test
