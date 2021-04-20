@@ -32,7 +32,7 @@ jobs:
           tag: 0.1.<< pipeline.number >>             
       - docker/push:
           image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
-          tag: "latest"
+          tag: "latest, 0.1.<< pipeline.number >>"
 workflows:
   test_build_deploy:
     jobs:
