@@ -31,8 +31,7 @@ jobs:
           extra_build_args: "-t $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME"
           tag: 0.1.<< pipeline.number >>             
       - docker/push:
-          image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
-          tag: 0.1.<< pipeline.number >>
+          step-name: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
 workflows:
   test_build_deploy:
     jobs:
