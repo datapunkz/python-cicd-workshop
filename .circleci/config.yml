@@ -1,15 +1,10 @@
 version: 2.1
-workflows:
-  build_test_deploy:
-    jobs:
-      - build_test
-      - deploy:
-          requires:
-            - build_test
+orbs:
+  docker: circleci/docker@1.5.0
 jobs:
   build_test:
     docker:
-      - image: circleci/python:3.7
+      - image: circleci/python:3.9 
     steps:
       - checkout
       - run:
@@ -19,21 +14,32 @@ jobs:
       - run:
           name: Run Tests
           command: ~/.local/bin/pytest
-  deploy:
+  build_push_docker_image:
     docker:
-      - image: circleci/python:3.7
+      - image: circleci/python:3.9
     steps:
       - checkout
-      - setup_remote_docker:
-          docker_layer_caching: false
       - run:
-          name: Build and push Docker image
-          command: |       
+          name: Build app binary 
+          command: |
             pip install --user --no-cache-dir -r requirements.txt          
             ~/.local/bin/pyinstaller -F hello_world.py
-            echo 'export TAG=0.1.${CIRCLE_BUILD_NUM}' >> $BASH_ENV
-            echo 'export IMAGE_NAME=python-cicd-workshop' >> $BASH_ENV
-            source $BASH_ENV
-            docker build -t $DOCKER_LOGIN/$IMAGE_NAME -t $DOCKER_LOGIN/$IMAGE_NAME:$TAG .
-            echo $DOCKER_PWD | docker login -u $DOCKER_LOGIN --password-stdin
-            docker push $DOCKER_LOGIN/$IMAGE_NAME
+      - setup_remote_docker
+      - docker/check
+      - docker/build:
+          image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
+          extra_build_args: "-t $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME"
+          tag: 0.1.<< pipeline.number >>             
+      - docker/push:
+          image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
+          tag: "latest"
+      - docker/push:
+          image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
+          tag: "0.1.<< pipeline.number >>"
+workflows:
+  test_build_deploy:
+    jobs:
+      - build_test
+      - build_push_docker_image:
+          requires:
+            - build_test
