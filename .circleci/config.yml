@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  docker: circleci/docker@1.5.0
+  docker: circleci/docker@1.7.0
 jobs:
   build_test:
     docker:
@@ -27,14 +27,14 @@ jobs:
       - setup_remote_docker
       - docker/check
       - docker/build:
-          image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
-          extra_build_args: "-t $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME"
+          image: legend9ama/python-workbench
+          extra_build_args: "-t legend9ama/python-workbench"
           tag: 0.1.<< pipeline.number >>             
       - docker/push:
-          image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
+          image: legend9ama/python-workbench
           tag: "latest"
       - docker/push:
-          image: $DOCKER_LOGIN/$CIRCLE_PROJECT_REPONAME
+          image: legend9ama/python-workbench
           tag: "0.1.<< pipeline.number >>"
 workflows:
   test_build_deploy:
