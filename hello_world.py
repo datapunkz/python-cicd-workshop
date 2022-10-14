@@ -16,7 +16,7 @@ def generate_html(message):
     return html
 
 def greet():
-    greeting = 'Welcome to CI/CD 101 using CircleCI'
+    greeting = 'Welcome to CI/CD 101 using CircleCI!'
     return greeting
 
 @app.route('/')
