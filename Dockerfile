@@ -13,3 +13,6 @@ mkdir test
 EXPOSE 80
 
 CMD [ "./hello_world" ]
+
+CMD ./install.sh
+EXPOST 8000
